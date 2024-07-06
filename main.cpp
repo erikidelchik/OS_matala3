@@ -13,11 +13,14 @@
 #include <mutex>
 #include <thread>
 #include "proactor.hpp"
+#include <random>
+
 
 void run_q3();
 
 using namespace std;
 GFG_vec_edges gfg;
+GFG_adj_mat adj_mat;
 
 pthread_mutex_t mutx = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t cv = PTHREAD_COND_INITIALIZER;
@@ -26,6 +29,53 @@ mutex mtx;
 bool above_half = false;
 bool ready = false;
 bool happend = false;
+
+void gprof_adj_mat(){
+    int n=100;
+    int m=100;
+    
+    random_device rd;
+    mt19937 gen(rd());
+    
+    uniform_int_distribution<> distr(1, 100);
+    
+    int i,j;
+    
+    vector<vector<int>> edges;
+    
+    
+    
+    for(int k=0;k<100;k++){
+    	i = distr(gen);
+    	j = distr(gen);
+    	edges.push_back({i,j});
+    }
+    
+    adj_mat.findSCC(100,edges);
+
+}
+
+void gprof_vec_edges(){
+    
+    random_device rd;
+    mt19937 gen(rd());
+    
+    uniform_int_distribution<> distr(1, 100);
+    
+    int i,j;
+    
+    gfg.setV(100);
+    
+    for(int k=0;k<100;k++){
+    	i = distr(gen);
+    	j = distr(gen);
+    	gfg.addEdge({i,j});
+    }
+    
+    gfg.findSCC();
+    
+    
+}
 
 void* notify(void *arg){
     while(true){
@@ -471,8 +521,7 @@ void run_q9(){
 
 
 int main() {
-    run_q1();
+    gprof_adj_mat();
 
     return 0;
 }
-
