@@ -29,6 +29,7 @@ mutex mtx;
 bool above_half = false;
 bool ready = false;
 bool happend = false;
+bool q10 = false;
 
 void gprof_adj_mat(){
     int n=100;
@@ -163,13 +164,13 @@ void printSCC(int fd=-1){
 	 if(vertices/2>=lfs) above_half = true;
 	 else above_half = false;
 	 
-	 if(above_half && !happend){ 
+	 if(above_half && !happend && q10){ 
 	 	happend = true;
 	 	ready = true;
 	 	pthread_cond_broadcast(&cv);
 	 }
 	 
-	 else if(!above_half && happend){
+	 else if(!above_half && happend && q10){
 	 	happend = false;
 	 	cout<<"At Least 50% of the graph no longer belongs to the same SCC\n";
 	 	
@@ -503,6 +504,7 @@ void run_q7(){
 }
 
 void run_q9(){
+    q10 = true;
     int serverFd = -1;
     struct sockaddr_in address;
     
